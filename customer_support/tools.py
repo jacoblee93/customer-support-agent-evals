@@ -654,8 +654,8 @@ def cancel_excursion(recommendation_id: int) -> str:
 
 
 @tool
-def check_upgrade_availability(flight_id: int) -> str:
+def check_flight_for_upgrade_space(flight_id: int) -> str:
     """
-    Check if an upgrade is available for a flight by its ID.
+    Check if a flight has remaining upgrade space by its ID.
     """
     return True

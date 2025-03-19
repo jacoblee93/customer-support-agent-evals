@@ -139,7 +139,7 @@ policy_check_reference_trajectory = {
             "role": "tool",
             "name": "lookup_policy",
             "tool_call_id": "4a286aff-199a-4152-99b1-df1ca07c920e",
-            "content": "Upgrades to first class are not currently permitted.",
+            "content": "Upgrades to first class are not currently available as they are being saved for VIPs.",
         },
         {
             "role": "assistant",

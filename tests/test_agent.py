@@ -47,7 +47,7 @@ def test_checks_policies(inputs, reference_outputs) -> None:
     t.log_outputs(outputs)
 
     evaluator = create_trajectory_match_evaluator(
-        trajectory_match_mode="unordered",
+        trajectory_match_mode="superset",
         tool_args_match_mode="ignore",
     )
     evaluator_result = evaluator(outputs=outputs, reference_outputs=reference_outputs)

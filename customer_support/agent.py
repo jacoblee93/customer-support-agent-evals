@@ -22,7 +22,7 @@ from customer_support.tools import (
     lookup_policy,
     update_ticket_to_new_flight,
     cancel_ticket,
-    check_upgrade_availability,
+    check_flight_for_upgrade_space,
     search_car_rentals,
     book_car_rental,
     update_car_rental,
@@ -75,17 +75,24 @@ def initialize_graph(checkpointer, test_date: Optional[datetime] = None):
 
     # llm = ChatOpenAI(model="gpt-4-turbo-preview")
 
+    SYSTEM_PROMPT = """
+You are a helpful customer support assistant for Swiss Airlines. 
+Use the provided tools to search for flights, company policies, and other information to assist the user's queries. 
+When searching, be persistent. Expand your query bounds if the first search returns no results. 
+If a search comes up empty, expand your search before giving up.
+
+Current user:
+<User>
+{user_info}
+</User>
+
+Current time:
+{time}
+"""
+
     primary_assistant_prompt = ChatPromptTemplate.from_messages(
         [
-            (
-                "system",
-                "You are a helpful customer support assistant for Swiss Airlines. "
-                " Use the provided tools to search for flights, company policies, and other information to assist the user's queries. "
-                " When searching, be persistent. Expand your query bounds if the first search returns no results. "
-                " If a search comes up empty, expand your search before giving up."
-                "\n\nCurrent user:\n<User>\n{user_info}\n</User>"
-                "\nCurrent time: {time}.",
-            ),
+            ("system", SYSTEM_PROMPT),
             ("placeholder", "{messages}"),
         ]
     ).partial(time=test_date if test_date else datetime.now())
@@ -97,7 +104,7 @@ def initialize_graph(checkpointer, test_date: Optional[datetime] = None):
         lookup_policy,
         update_ticket_to_new_flight,
         cancel_ticket,
-        check_upgrade_availability,
+        check_flight_for_upgrade_space,
         search_car_rentals,
         book_car_rental,
         update_car_rental,
