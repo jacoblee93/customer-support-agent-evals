@@ -658,4 +658,9 @@ def check_flight_for_upgrade_space(flight_id: int) -> str:
     """
     Check if a flight has remaining upgrade space by its ID.
     """
+    # """
+    # Check if a flight has remaining upgrade space by its ID.
+    # Note that you should always confirm that company policy allows upgrades for a given user
+    # based on frequent flyer status before promising upgrades to the user.
+    # """
     return True

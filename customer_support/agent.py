@@ -5,6 +5,9 @@ from typing_extensions import TypedDict
 from langgraph.graph.message import AnyMessage, add_messages
 from datetime import datetime
 
+from langgraph.graph import StateGraph, START
+from langgraph.prebuilt import tools_condition
+
 
 class State(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
@@ -23,18 +26,6 @@ from customer_support.tools import (
     update_ticket_to_new_flight,
     cancel_ticket,
     check_flight_for_upgrade_space,
-    search_car_rentals,
-    book_car_rental,
-    update_car_rental,
-    cancel_car_rental,
-    search_hotels,
-    book_hotel,
-    update_hotel,
-    cancel_hotel,
-    search_trip_recommendations,
-    book_excursion,
-    update_excursion,
-    cancel_excursion,
 )
 
 from customer_support.utils import create_tool_node_with_fallback
@@ -65,15 +56,7 @@ class Assistant:
 
 
 def initialize_graph(checkpointer, test_date: Optional[datetime] = None):
-    # Haiku is faster and cheaper, but less accurate
-    # llm = ChatAnthropic(model="claude-3-haiku-20240307")
-    # llm = ChatAnthropic(model="claude-3-5-sonnet-latest", temperature=1)
     llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
-    # You could swap LLMs, though you will likely want to update the prompts when
-    # doing so!
-    # from langchain_openai import ChatOpenAI
-
-    # llm = ChatOpenAI(model="gpt-4-turbo-preview")
 
     SYSTEM_PROMPT = """
 You are a helpful customer support assistant for Swiss Airlines. 
@@ -97,7 +80,7 @@ Current time:
         ]
     ).partial(time=test_date if test_date else datetime.now())
 
-    part_1_tools = [
+    tools = [
         TavilySearchResults(max_results=1),
         fetch_user_flight_information,
         search_flights,
@@ -105,30 +88,13 @@ Current time:
         update_ticket_to_new_flight,
         cancel_ticket,
         check_flight_for_upgrade_space,
-        search_car_rentals,
-        book_car_rental,
-        update_car_rental,
-        cancel_car_rental,
-        search_hotels,
-        book_hotel,
-        update_hotel,
-        cancel_hotel,
-        search_trip_recommendations,
-        book_excursion,
-        update_excursion,
-        cancel_excursion,
     ]
-    part_1_assistant_runnable = primary_assistant_prompt | llm.bind_tools(part_1_tools)
-
-    from langgraph.graph import StateGraph, START
-    from langgraph.prebuilt import tools_condition
+    assistant_runnable = primary_assistant_prompt | llm.bind_tools(tools)
 
     builder = StateGraph(State)
 
-    # Define nodes: these do the work
-    builder.add_node("assistant", Assistant(part_1_assistant_runnable))
-    builder.add_node("tools", create_tool_node_with_fallback(part_1_tools))
-    # Define edges: these determine how the control flow moves
+    builder.add_node("assistant", Assistant(assistant_runnable))
+    builder.add_node("tools", create_tool_node_with_fallback(tools))
     builder.add_edge(START, "assistant")
     builder.add_conditional_edges(
         "assistant",
