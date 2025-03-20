@@ -73,7 +73,7 @@ def test_efficient_trajectory(inputs) -> None:
     evaluator = create_trajectory_llm_as_judge(
         model="openai:o3-mini",
         prompt=TRAJECTORY_EFFICIENCY_PROMPT,
-        choices=[0, 0.2, 0.4, 0.6, 0.8, 1],
+        choices=[0, 0.3, 0.5, 0.7, 1],
     )
     evaluator_result = evaluator(outputs=outputs)
     print(evaluator_result)

@@ -10,34 +10,27 @@ to effectively solve the user's queries.
   - Makes logical sense between steps and works towards resolving the user's query
   - May be incomplete
   - Does not ask for the same information multiple times if the answer is already in the conversation history
-  - If clarification is needed, tries to anticipate the user's preferences by providing as many options as possible to the user to potentially save a conversation turn
+  - If clarification is needed, tries to preemptive anticipate the user's preferences by fetching data as appropriate and providing options to the user to potentially save a conversation turn
 
   Scoring Criteria (0-1):
   1.0: Exceptional
-  - Resolves query with minimal interactions
+  - Resolves query with bare minimum interactions
   - Anticipates and addresses potential follow-up needs
-  - Provides comprehensive options when clarifying
-  - Perfect use of conversation history
+  - Provides comprehensive options while clarifying
 
-  0.8: Very Good
-  - Efficient resolution with minor redundancy
-  - Good anticipation of user needs
-  - Multiple options provided for choices
-  - Strong use of conversation history
-
-  0.6: Satisfactory
+  0.7: Satisfactory
   - Reasonable resolution path
   - Some missed opportunities for efficiency
-  - Basic options provided
+  - Basic preemptive options provided
   - Occasional redundant questions
 
-  0.4: Needs Improvement
-  - Inefficient resolution path
+  0.5: Needs Improvement
+  - Suboptimal resolution path
   - Limited anticipation of needs
-  - Single options provided
+  - No preemptive options provided
   - Multiple redundant questions
 
-  0.2: Poor
+  0.3: Poor
   - Very inefficient resolution
   - No anticipation of needs
   - Unclear or missing options
