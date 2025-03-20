@@ -41,13 +41,6 @@ config = {
 
 
 _printed = set()
-# for question in tutorial_questions:
-#     events = graph.stream(
-#         {"messages": ("user", question)}, config, stream_mode="values"
-#     )
-#     for event in events:
-#         _print_event(event, _printed)
-
 
 print("Welcome to the travel assistant! Type 'quit' to exit.")
 while True:

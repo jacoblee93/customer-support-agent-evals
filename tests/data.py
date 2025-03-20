@@ -147,3 +147,56 @@ policy_check_reference_trajectory = {
         },
     ]
 }
+
+efficiency_check_inputs_trajectory = {
+    "messages": [
+        {"role": "user", "content": "Hi there, what time is my flight?"},
+        {
+            "role": "assistant",
+            "tool_calls": [
+                {
+                    "type": "function",
+                    "id": "d3b6d04c-87b5-4e94-a11f-d8bc7c033188",
+                    "function": {
+                        "name": "fetch_user_flight_information",
+                        "arguments": "{}",
+                    },
+                }
+            ],
+            "content": "",
+        },
+        {
+            "role": "tool",
+            "name": "fetch_user_flight_information",
+            "tool_call_id": "d3b6d04c-87b5-4e94-a11f-d8bc7c033188",
+            "content": json.dumps(
+                [
+                    {
+                        "ticket_no": "7240005432906569",
+                        "book_ref": "C46E9F",
+                        "flight_id": 19250,
+                        "flight_no": "LX0112",
+                        "departure_airport": "CDG",
+                        "arrival_airport": "BSL",
+                        "scheduled_departure": (
+                            test_date + timedelta(hours=1)
+                        ).isoformat(),
+                        "scheduled_arrival": (
+                            test_date + timedelta(hours=2)
+                        ).isoformat(),
+                        "seat_no": "18E",
+                        "fare_conditions": "Economy",
+                    }
+                ]
+            ),
+        },
+        {
+            "role": "assistant",
+            "content": "Your flight LX0112 from CDG to BSL is scheduled to depart in an hour and arrive in two hours.",
+        },
+        {
+            "role": "user",
+            "content": "I can't make it anymore - can you rebook me for tomorrow?",
+        },
+    ],
+}
