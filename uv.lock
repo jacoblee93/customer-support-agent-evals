@@ -115,6 +115,24 @@ wheels = [
 ]
 
 [[package]]
+name = "anthropic"
+version = "0.49.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "distro" },
+    { name = "httpx" },
+    { name = "jiter" },
+    { name = "pydantic" },
+    { name = "sniffio" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/86/e3/a88c8494ce4d1a88252b9e053607e885f9b14d0a32273d47b727cbee4228/anthropic-0.49.0.tar.gz", hash = "sha256:c09e885b0f674b9119b4f296d8508907f6cff0009bc20d5cf6b35936c40b4398", size = 210016 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/76/74/5d90ad14d55fbe3f9c474fdcb6e34b4bed99e3be8efac98734a5ddce88c1/anthropic-0.49.0-py3-none-any.whl", hash = "sha256:bbc17ad4e7094988d2fa86b87753ded8dce12498f4b85fe5810f208f454a8375", size = 243368 },
+]
+
+[[package]]
 name = "anyio"
 version = "4.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -263,9 +281,11 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "agentevals" },
+    { name = "langchain-anthropic" },
     { name = "langchain-community" },
     { name = "langchain-google-genai" },
     { name = "langgraph" },
+    { name = "langgraph-supervisor" },
     { name = "langgraph-swarm" },
     { name = "langsmith", extra = ["pytest"] },
     { name = "openai" },
@@ -275,9 +295,11 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "agentevals", specifier = "==0.0.4rc1" },
+    { name = "langchain-anthropic", specifier = ">=0.3.10" },
     { name = "langchain-community", specifier = ">=0.3.20" },
     { name = "langchain-google-genai", specifier = ">=2.1.0" },
     { name = "langgraph", specifier = ">=0.3.16" },
+    { name = "langgraph-supervisor", specifier = ">=0.0.10" },
     { name = "langgraph-swarm", specifier = ">=0.0.7" },
     { name = "langsmith", extras = ["pytest"], specifier = ">=0.3.17" },
     { name = "openai", specifier = ">=1.66.5" },
@@ -677,6 +699,20 @@ wheels = [
 ]
 
 [[package]]
+name = "langchain-anthropic"
+version = "0.3.10"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anthropic" },
+    { name = "langchain-core" },
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/27/81/0e1e38694afd10d057dab8292823e1fd9dce2b03757b1cf581de7e3ea362/langchain_anthropic-0.3.10.tar.gz", hash = "sha256:b4364434393476bf076c8326a51261a55d4e4cfefda01b8adf53533e8ebd8ec5", size = 44023 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f4/aa/ca26a13aff12228cb3123cdaf23ee19ffa759102146fb81e3c3bccc599ef/langchain_anthropic-0.3.10-py3-none-any.whl", hash = "sha256:f4aa8ec03b1f5bcfbb73d2db516bddf009bc457e524f1ee8d651c1fe7338603f", size = 25527 },
+]
+
+[[package]]
 name = "langchain-community"
 version = "0.3.20"
 source = { registry = "https://pypi.org/simple" }
@@ -810,6 +846,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d1/a2/d7a1b8a62b602e3aa67b07fa7bc789961ff03365fcd4e9a6ab4efe60be99/langgraph_sdk-0.1.57.tar.gz", hash = "sha256:d15d137793cb6a2202c046553624f872fd0b70997fc6f97845a5cd3f746a9137", size = 42885 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5f/9a/95a2c04c876f9622dc36b8be185323c49fffa094aeafbcfb233718b008f3/langgraph_sdk-0.1.57-py3-none-any.whl", hash = "sha256:fd35dd4b1bb4ac935d2d196080b282be3d2cbb92c460d8de1297b069f45a169e", size = 46003 },
+]
+
+[[package]]
+name = "langgraph-supervisor"
+version = "0.0.10"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "langgraph" },
+    { name = "langgraph-prebuilt" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8d/7d/10aa925ffa86448a148f501120f0b3d71fe32e7679a364329d6513ca32cd/langgraph_supervisor-0.0.10.tar.gz", hash = "sha256:55f65e824a132f2e3e7819772e525b1055a4070a9e62e6012391c1f27af3024c", size = 12868 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b8/e2/513601bb3f7ad7f6134b5effd5ce5f1db29c0169880bbb8aa1a406b34d35/langgraph_supervisor-0.0.10-py3-none-any.whl", hash = "sha256:69cb375c128741eb1e6150b72172b03be9e525c63ca402d7be9c0fdf7ebaf482", size = 10203 },
 ]
 
 [[package]]

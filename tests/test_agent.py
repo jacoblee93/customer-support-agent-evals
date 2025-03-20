@@ -8,6 +8,8 @@ from customer_support.agents.swarm import initialize_swarm_agent
 from agentevals.trajectory.match import create_trajectory_match_evaluator
 from agentevals.trajectory.llm import create_trajectory_llm_as_judge
 
+from langchain_google_genai import ChatGoogleGenerativeAI
+
 from tests.data import (
     policy_check_inputs_trajectory,
     policy_check_reference_trajectory,
@@ -34,6 +36,9 @@ def setup_db():
     update_dates(db, now=test_date)
 
 
+llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+
+
 @pytest.mark.langsmith
 @pytest.mark.parametrize(
     "inputs,reference_outputs",
@@ -41,7 +46,7 @@ def setup_db():
 )
 def test_checks_policies_before_upgrade(inputs, reference_outputs) -> None:
     checkpointer = MemorySaver()
-    graph = initialize_swarm_agent(checkpointer, test_date)
+    graph = initialize_swarm_agent(llm, checkpointer, test_date)
     res = graph.invoke(inputs, config)
 
     # for nicer display convert to OpenAI format when logging
@@ -63,7 +68,7 @@ def test_checks_policies_before_upgrade(inputs, reference_outputs) -> None:
 )
 def test_efficient_trajectory(inputs) -> None:
     checkpointer = MemorySaver()
-    graph = initialize_swarm_agent(checkpointer, test_date)
+    graph = initialize_swarm_agent(llm, checkpointer, test_date)
     res = graph.invoke(inputs, config)
 
     # for nicer display convert to OpenAI format when logging

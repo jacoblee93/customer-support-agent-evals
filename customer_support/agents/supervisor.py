@@ -4,47 +4,47 @@ from datetime import datetime
 
 from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.graph import StateGraph, START
-from langgraph_swarm import create_handoff_tool, create_swarm
+from langgraph_supervisor import create_supervisor
 
 from customer_support.agents.state import State
 from customer_support.agents.subagents.flight import initialize_flight_agent
 from customer_support.agents.subagents.hotel import initialize_hotel_agent
 
-from langchain_core.runnables import RunnableConfig
 from langchain_core.language_models.chat_models import BaseChatModel
+from langchain_core.runnables import RunnableConfig
+
+SUPERVISOR_PROMPT = """
+You are a team supervisor managing a flight booking agent and a hotel booking agent. 
+For flight booking, use flight_agent. 
+For hotel booking, use hotel_agent.
+
+When transferring to another agent, you should also restate the original question to give
+your subordinate the proper context. There is no need to ask for confirmation before transferring.
+"""
 
 
-def initialize_swarm_agent(
+def initialize_supervisor_agent(
     llm: BaseChatModel,
     checkpointer: BaseCheckpointSaver,
     test_date: Optional[datetime] = None,
 ):
     flight_agent = initialize_flight_agent(
         llm,
-        [
-            create_handoff_tool(
-                agent_name="hotel_agent",
-                description="Transfer to Bob, a customer support agent specializing in hotels",
-            )
-        ],
+        [],
         "flight_agent",
         test_date,
     )
     hotel_agent = initialize_hotel_agent(
         llm,
-        [
-            create_handoff_tool(
-                agent_name="flight_agent",
-                description="Transfer to Alice, a customer support agent specializing in flights",
-            )
-        ],
+        [],
         "hotel_agent",
         test_date,
     )
 
-    swarm = create_swarm(
+    supervisor = create_supervisor(
         [flight_agent, hotel_agent],
-        default_active_agent="flight_agent",
+        model=llm,
+        prompt=SUPERVISOR_PROMPT,
         state_schema=State,
     ).compile()
 
@@ -56,7 +56,7 @@ def initialize_swarm_agent(
     builder = StateGraph(State)
 
     builder.add_node("set_user_info", set_user_info)
-    builder.add_node("swarm", swarm)
+    builder.add_node("supervisor", supervisor)
     builder.add_edge(START, "set_user_info")
-    builder.add_edge("set_user_info", "swarm")
+    builder.add_edge("set_user_info", "supervisor")
     return builder.compile(checkpointer=checkpointer)
