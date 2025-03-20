@@ -6,16 +6,18 @@ from langgraph.graph.message import AnyMessage, add_messages
 from datetime import datetime
 
 from langgraph.graph import StateGraph, START
-from langgraph.prebuilt import tools_condition
+from langgraph.prebuilt import create_react_agent
 
 
 class State(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
+    remaining_steps: int
+    user_info: str
 
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import Runnable, RunnableConfig
+from langchain_core.runnables import RunnableConfig
 
 from customer_support.tools import (
     fetch_user_flight_information,
@@ -25,32 +27,6 @@ from customer_support.tools import (
     cancel_ticket,
     check_flight_for_upgrade_space,
 )
-
-from customer_support.utils import create_tool_node_with_fallback
-
-
-class Assistant:
-    def __init__(self, runnable: Runnable):
-        self.runnable = runnable
-
-    def __call__(self, state: State, config: RunnableConfig):
-        while True:
-            configuration = config.get("configurable", {})
-            passenger_id = configuration.get("passenger_id", None)
-            state = {**state, "user_info": passenger_id}
-            result = self.runnable.invoke(state)
-            # If the LLM happens to return an empty response, we will re-prompt it
-            # for an actual response.
-            if not result.tool_calls and (
-                not result.content
-                or isinstance(result.content, list)
-                and not result.content[0].get("text")
-            ):
-                messages = state["messages"] + [("user", "Respond with a real output.")]
-                state = {**state, "messages": messages}
-            else:
-                break
-        return {"messages": result}
 
 
 def initialize_graph(checkpointer, test_date: Optional[datetime] = None):
@@ -71,7 +47,7 @@ Current time:
 {time}
 """
 
-    primary_assistant_prompt = ChatPromptTemplate.from_messages(
+    flight_agent_prompt = ChatPromptTemplate.from_messages(
         [
             ("system", SYSTEM_PROMPT),
             ("placeholder", "{messages}"),
@@ -86,16 +62,23 @@ Current time:
         cancel_ticket,
         check_flight_for_upgrade_space,
     ]
-    assistant_runnable = primary_assistant_prompt | llm.bind_tools(tools)
+
+    flight_agent = create_react_agent(
+        llm,
+        tools=tools,
+        prompt=flight_agent_prompt,
+        state_schema=State,
+    )
+
+    def set_user_info(state: State, config: RunnableConfig):
+        configuration = config.get("configurable", {})
+        passenger_id = configuration.get("passenger_id", None)
+        return {**state, "user_info": passenger_id}
 
     builder = StateGraph(State)
 
-    builder.add_node("assistant", Assistant(assistant_runnable))
-    builder.add_node("tools", create_tool_node_with_fallback(tools))
-    builder.add_edge(START, "assistant")
-    builder.add_conditional_edges(
-        "assistant",
-        tools_condition,
-    )
-    builder.add_edge("tools", "assistant")
+    builder.add_node("set_user_info", set_user_info)
+    builder.add_node("flight_agent", flight_agent)
+    builder.add_edge(START, "set_user_info")
+    builder.add_edge("set_user_info", "flight_agent")
     return builder.compile(checkpointer=checkpointer)
