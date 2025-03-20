@@ -8,3 +8,4 @@ class State(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
     remaining_steps: int
     user_info: str
+    active_agent: str

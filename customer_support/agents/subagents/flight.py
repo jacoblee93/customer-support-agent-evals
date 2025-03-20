@@ -9,7 +9,7 @@ from langchain_core.prompts import ChatPromptTemplate
 
 from customer_support.agents.state import State
 
-from customer_support.tools import (
+from customer_support.agents.tools import (
     fetch_user_flight_information,
     search_flights,
     lookup_policy,
@@ -19,7 +19,12 @@ from customer_support.tools import (
 )
 
 
-def initialize_flight_agent(llm: BaseChatModel, test_date: Optional[datetime] = None):
+def initialize_flight_agent(
+    llm: BaseChatModel,
+    additional_tools: list,
+    name: str,
+    test_date: Optional[datetime] = None,
+):
     SYSTEM_PROMPT = """
 You are a helpful customer support assistant for Swiss Airlines. 
 Use the provided tools to search for flights, company policies, and other information to assist the user's queries. 
@@ -43,6 +48,7 @@ Current time:
     ).partial(time=test_date if test_date else datetime.now())
 
     tools = [
+        *additional_tools,
         fetch_user_flight_information,
         search_flights,
         lookup_policy,
@@ -56,4 +62,5 @@ Current time:
         tools=tools,
         prompt=flight_agent_prompt,
         state_schema=State,
+        name=name,
     )

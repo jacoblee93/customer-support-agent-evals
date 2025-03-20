@@ -24,7 +24,6 @@ if overwrite or not os.path.exists(db):
 def update_dates(file, now=None):
     shutil.copy(backup_file, file)
     conn = sqlite3.connect(file)
-    cursor = conn.cursor()
 
     tables = pd.read_sql(
         "SELECT name FROM sqlite_master WHERE type='table';", conn

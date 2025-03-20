@@ -1,5 +1,5 @@
 import uuid
-from customer_support.agents import initialize_main_agent
+from customer_support.agents.swarm import initialize_swarm_agent
 from customer_support.db import update_dates, db
 from customer_support.utils import print_event
 from langgraph.checkpoint.memory import MemorySaver
@@ -27,7 +27,7 @@ update_dates(db)
 
 thread_id = str(uuid.uuid4())
 
-graph = initialize_main_agent(MemorySaver())
+graph = initialize_swarm_agent(MemorySaver())
 
 config = {
     "configurable": {
