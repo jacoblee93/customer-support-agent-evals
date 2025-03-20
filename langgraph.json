@@ -1,0 +1,6 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "swarm": "./customer_support/agents/swarm.py:initialize_swarm_agent_with_defaults"
+  }
+}

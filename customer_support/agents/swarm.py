@@ -15,11 +15,17 @@ from customer_support.agents.subagents.hotel import initialize_hotel_agent
 
 from langchain_core.runnables import RunnableConfig
 from langchain_core.language_models.chat_models import BaseChatModel
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+
+def initialize_swarm_agent_with_defaults():
+    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+    return initialize_swarm_agent(llm)
 
 
 def initialize_swarm_agent(
     llm: BaseChatModel,
-    checkpointer: BaseCheckpointSaver,
+    checkpointer: Optional[BaseCheckpointSaver] = None,
     test_date: Optional[datetime] = None,
 ):
     flight_agent = initialize_flight_agent(

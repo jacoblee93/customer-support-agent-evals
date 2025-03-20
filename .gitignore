@@ -12,3 +12,4 @@ wheels/
 travel2.backup.sqlite
 travel2.sqlite
 .env
+.langgraph_api
