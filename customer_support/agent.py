@@ -13,9 +13,7 @@ class State(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
 
 
-from langchain_anthropic import ChatAnthropic
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import Runnable, RunnableConfig
 
@@ -81,7 +79,6 @@ Current time:
     ).partial(time=test_date if test_date else datetime.now())
 
     tools = [
-        TavilySearchResults(max_results=1),
         fetch_user_flight_information,
         search_flights,
         lookup_policy,
