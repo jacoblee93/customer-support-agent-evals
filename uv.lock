@@ -266,6 +266,7 @@ dependencies = [
     { name = "langchain-community" },
     { name = "langchain-google-genai" },
     { name = "langgraph" },
+    { name = "langgraph-swarm" },
     { name = "langsmith", extra = ["pytest"] },
     { name = "openai" },
     { name = "pandas" },
@@ -277,6 +278,7 @@ requires-dist = [
     { name = "langchain-community", specifier = ">=0.3.20" },
     { name = "langchain-google-genai", specifier = ">=2.1.0" },
     { name = "langgraph", specifier = ">=0.3.16" },
+    { name = "langgraph-swarm", specifier = ">=0.0.7" },
     { name = "langsmith", extras = ["pytest"], specifier = ">=0.3.17" },
     { name = "openai", specifier = ">=1.66.5" },
     { name = "pandas", specifier = ">=2.2.3" },
@@ -808,6 +810,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d1/a2/d7a1b8a62b602e3aa67b07fa7bc789961ff03365fcd4e9a6ab4efe60be99/langgraph_sdk-0.1.57.tar.gz", hash = "sha256:d15d137793cb6a2202c046553624f872fd0b70997fc6f97845a5cd3f746a9137", size = 42885 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5f/9a/95a2c04c876f9622dc36b8be185323c49fffa094aeafbcfb233718b008f3/langgraph_sdk-0.1.57-py3-none-any.whl", hash = "sha256:fd35dd4b1bb4ac935d2d196080b282be3d2cbb92c460d8de1297b069f45a169e", size = 46003 },
+]
+
+[[package]]
+name = "langgraph-swarm"
+version = "0.0.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "langchain-core" },
+    { name = "langgraph" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/62/b8/1ccc14ec6a10ac9b33ea02cd93af52e8999d1411d372f6b66e6a589410bd/langgraph_swarm-0.0.7.tar.gz", hash = "sha256:3abc365ff53079944eb536deaa336860b6183476754fa42fb3403a3dcdb0aeb5", size = 10117 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/33/7b/e19dd72505044a3acb017211739b3d9ac7be5f3172b6c9262a7c2f750b08/langgraph_swarm-0.0.7-py3-none-any.whl", hash = "sha256:1e0232b76c35362b8fa476fe9381da0230685d9af10fd9ec0a4bc14c84fb72c2", size = 8054 },
 ]
 
 [[package]]

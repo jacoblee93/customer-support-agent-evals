@@ -4,7 +4,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from customer_support.db import update_dates, db
 import uuid
 from langchain_core.messages.utils import convert_to_openai_messages
-from customer_support.agent import initialize_graph
+from customer_support.agents import initialize_main_agent
 from agentevals.trajectory.match import create_trajectory_match_evaluator
 from agentevals.trajectory.llm import create_trajectory_llm_as_judge
 
@@ -41,7 +41,7 @@ def setup_db():
 )
 def test_checks_policies_before_upgrade(inputs, reference_outputs) -> None:
     checkpointer = MemorySaver()
-    graph = initialize_graph(checkpointer, test_date)
+    graph = initialize_main_agent(checkpointer, test_date)
     res = graph.invoke(inputs, config)
 
     # for nicer display convert to OpenAI format when logging
@@ -63,7 +63,7 @@ def test_checks_policies_before_upgrade(inputs, reference_outputs) -> None:
 )
 def test_efficient_trajectory(inputs) -> None:
     checkpointer = MemorySaver()
-    graph = initialize_graph(checkpointer, test_date)
+    graph = initialize_main_agent(checkpointer, test_date)
     res = graph.invoke(inputs, config)
 
     # for nicer display convert to OpenAI format when logging

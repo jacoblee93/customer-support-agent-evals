@@ -9,6 +9,7 @@ dependencies = [
     "langchain-community>=0.3.20",
     "langchain-google-genai>=2.1.0",
     "langgraph>=0.3.16",
+    "langgraph-swarm>=0.0.7",
     "langsmith[pytest]>=0.3.17",
     "openai>=1.66.5",
     "pandas>=2.2.3",
