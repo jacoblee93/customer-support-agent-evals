@@ -10,6 +10,9 @@ from customer_support.agents.state import State
 from customer_support.agents.subagents.flight import initialize_flight_agent
 from customer_support.agents.subagents.hotel import initialize_hotel_agent
 
+# from customer_support.agents.subagents.optimized.flight import initialize_flight_agent
+# from customer_support.agents.subagents.optimized.hotel import initialize_hotel_agent
+
 from langchain_core.runnables import RunnableConfig
 from langchain_core.language_models.chat_models import BaseChatModel
 

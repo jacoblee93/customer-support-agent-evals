@@ -148,7 +148,7 @@ policy_check_reference_trajectory = {
     ]
 }
 
-efficiency_check_inputs_trajectory = {
+handoff_check_inputs_trajectory = {
     "messages": [
         {"role": "user", "content": "Hi there, what time is my flight?"},
         {
@@ -195,8 +195,8 @@ efficiency_check_inputs_trajectory = {
             "content": "Your flight LX0112 from CDG to BSL is scheduled to depart in an hour and arrive in two hours.",
         },
         {
+            "content": "Can you book me a hotel for 3 nights when I land?",
             "role": "user",
-            "content": "I can't make it anymore - can you rebook me for tomorrow?",
         },
     ],
 }
