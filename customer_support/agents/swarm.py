@@ -20,7 +20,6 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 
 def initialize_swarm_agent_with_defaults():
-    update_dates(db)
     llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     return initialize_swarm_agent(llm)
 
