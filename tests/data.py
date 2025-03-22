@@ -54,7 +54,7 @@ policy_check_inputs_trajectory = {
         },
         {
             "role": "user",
-            "content": "Update it to the next flight after that and bump me to first class if there is availability.",
+            "content": "Bump me to first class!",
         },
     ]
 }
