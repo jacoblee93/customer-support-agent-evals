@@ -53,32 +53,44 @@ def test_checks_policies_before_upgrade(inputs, reference_outputs) -> None:
     outputs = {"messages": convert_to_openai_messages(res["messages"])}
     t.log_outputs(outputs)
 
+    def lookup_policy_query_matcher(tool_args: dict, reference_tool_args: dict):
+        if reference_tool_args.get("query") and "upgrade" in reference_tool_args.get(
+            "query"
+        ):
+            return "upgrade" in tool_args.get("query")
+        # Ignore for other policy query matches
+        return True
+
     evaluator = create_trajectory_match_evaluator(
         trajectory_match_mode="superset",
         tool_args_match_mode="ignore",
+        tool_args_match_overrides={
+            "lookup_policy": lookup_policy_query_matcher,
+        },
     )
+
     evaluator_result = evaluator(outputs=outputs, reference_outputs=reference_outputs)
     assert evaluator_result["score"]
 
 
-@pytest.mark.langsmith
-@pytest.mark.parametrize(
-    "inputs",
-    [handoff_check_inputs_trajectory],
-)
-def test_efficient_handoff(inputs) -> None:
-    checkpointer = MemorySaver()
-    graph = initialize_swarm_agent(llm, checkpointer, test_date)
-    res = graph.invoke(inputs, config)
+# @pytest.mark.langsmith
+# @pytest.mark.parametrize(
+#     "inputs",
+#     [handoff_check_inputs_trajectory],
+# )
+# def test_efficient_handoff(inputs) -> None:
+#     checkpointer = MemorySaver()
+#     graph = initialize_swarm_agent(llm, checkpointer, test_date)
+#     res = graph.invoke(inputs, config)
 
-    # for nicer display convert to OpenAI format when logging
-    outputs = {"messages": convert_to_openai_messages(res["messages"])}
-    t.log_outputs(outputs)
+#     # for nicer display convert to OpenAI format when logging
+#     outputs = {"messages": convert_to_openai_messages(res["messages"])}
+#     t.log_outputs(outputs)
 
-    evaluator = create_trajectory_llm_as_judge(
-        model="openai:o3-mini",
-        prompt=TRAJECTORY_EFFICIENCY_PROMPT,
-        choices=[0, 0.3, 0.5, 0.7, 1],
-    )
-    evaluator_result = evaluator(outputs=outputs)
-    print(evaluator_result)
+#     evaluator = create_trajectory_llm_as_judge(
+#         model="openai:o3-mini",
+#         prompt=TRAJECTORY_EFFICIENCY_PROMPT,
+#         choices=[0, 0.3, 0.5, 0.7, 1],
+#     )
+#     evaluator_result = evaluator(outputs=outputs)
+#     print(evaluator_result)

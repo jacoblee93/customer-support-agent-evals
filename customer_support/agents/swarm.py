@@ -9,6 +9,7 @@ from langgraph_swarm import create_handoff_tool, create_swarm
 from customer_support.agents.state import State
 from customer_support.agents.subagents.flight import initialize_flight_agent
 from customer_support.agents.subagents.hotel import initialize_hotel_agent
+from customer_support.agents.tools import DEMO_PASSENGER_ID
 
 # from customer_support.agents.subagents.optimized.flight import initialize_flight_agent
 # from customer_support.agents.subagents.optimized.hotel import initialize_hotel_agent
@@ -59,7 +60,7 @@ def initialize_swarm_agent(
 
     def set_user_info(state: State, config: RunnableConfig):
         configuration = config.get("configurable", {})
-        passenger_id = configuration.get("passenger_id", None)
+        passenger_id = configuration.get("passenger_id", DEMO_PASSENGER_ID)
         return {**state, "user_info": passenger_id}
 
     builder = StateGraph(State)

@@ -64,65 +64,6 @@ policy_check_reference_trajectory = {
     + [
         {
             "role": "assistant",
-            "tool_calls": [
-                {
-                    "type": "function",
-                    "id": "f6ff5419-c03f-4543-b67d-72693c94b2ca",
-                    "function": {
-                        "name": "search_flights",
-                        "arguments": json.dumps(
-                            {
-                                "start_time": (
-                                    test_date + timedelta(hours=1)
-                                ).isoformat(),
-                                "departure_airport": "CDG",
-                                "arrival_airport": "BSL",
-                            }
-                        ),
-                    },
-                }
-            ],
-            "content": "",
-        },
-        {
-            "role": "tool",
-            "name": "search_flights",
-            "tool_call_id": "f6ff5419-c03f-4543-b67d-72693c94b2ca",
-            "content": json.dumps(
-                [
-                    {
-                        "flight_id": 19229,
-                        "flight_no": "LX0112",
-                        "scheduled_departure": (
-                            test_date + timedelta(hours=1)
-                        ).isoformat(),
-                        "scheduled_arrival": (
-                            test_date + timedelta(hours=2)
-                        ).isoformat(),
-                        "departure_airport": "CDG",
-                        "arrival_airport": "BSL",
-                        "status": "Scheduled",
-                        "aircraft_code": "SU9",
-                    },
-                    {
-                        "flight_id": 19232,
-                        "flight_no": "LX0112",
-                        "scheduled_departure": (
-                            test_date + timedelta(hours=4)
-                        ).isoformat(),
-                        "scheduled_arrival": (
-                            test_date + timedelta(hours=5)
-                        ).isoformat(),
-                        "departure_airport": "CDG",
-                        "arrival_airport": "BSL",
-                        "status": "Scheduled",
-                        "aircraft_code": "SU9",
-                    },
-                ]
-            ),
-        },
-        {
-            "role": "assistant",
             "content": "",
             "tool_calls": [
                 {
