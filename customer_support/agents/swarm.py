@@ -10,7 +10,7 @@ from customer_support.agents.state import State
 from customer_support.agents.subagents.flight import initialize_flight_agent
 from customer_support.agents.subagents.hotel import initialize_hotel_agent
 from customer_support.agents.tools import DEMO_PASSENGER_ID
-
+from customer_support.db import update_dates, db
 # from customer_support.agents.subagents.optimized.flight import initialize_flight_agent
 # from customer_support.agents.subagents.optimized.hotel import initialize_hotel_agent
 
@@ -20,6 +20,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 
 def initialize_swarm_agent_with_defaults():
+    update_dates(db)
     llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     return initialize_swarm_agent(llm)
 

@@ -95,6 +95,7 @@ def fetch_user_flight_information(config: RunnableConfig) -> list[dict]:
     rows = cursor.fetchall()
     column_names = [column[0] for column in cursor.description]
     results = [dict(zip(column_names, row)) for row in rows]
+    print(results, passenger_id)
 
     cursor.close()
     conn.close()
